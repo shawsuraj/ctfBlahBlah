@@ -4,10 +4,7 @@ import sys
 from time import sleep
 import shutil
 from Defs.scans import *
-
-for arg in sys.argv :
-    if arg == "-v" : #If true - show verbose
-        verbose = True
+from Def.attack import *
 
 #Base Setup
 def baseSetup() :
@@ -17,7 +14,11 @@ def baseSetup() :
     ip = setIP()
     if os.path.isdir('Output') :
         shutil.rmtree("Output")
+    if os.path.isdir('Data') :
+        shutil.rmtree("Data")
     os.makedirs("Output")
+    os.makedirs("Data")
+
     dir(*ip)
     sleep(2) #Just to wait
 
@@ -38,20 +39,18 @@ def setIP() :
         ip.append(x)
     return ip
 
-def startScan() :
-    for i in range(n) :
-        bScan(ip[i])
-
-
 def dir(*ip) :
     for i in range(n) :
         os.system('mkdir Output/{}'.format(ip[i]))
+        os.system('mkdir Data/{}'.format(ip[i]))
 
-def exec(cmnd) :
+def execXterm(cmnd) :
     os.system('xterm -e bash -c "{}" &'.format(cmnd))
 
+def execGnome_terminal(cmnd) :
+    os.system('gnome-terminal -q -- /bin/sh -c "python3 {}"'.format(cmnd))
 
-def mainMenu():
+def header():
     os.system('clear')
     print ('''
 
@@ -67,14 +66,43 @@ def mainMenu():
                                                             BY:SHAWSURAJ
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~''')
 
+
+# def mainMenu():
+#     os.system('clear')
+#     print ('''
+#
+#  █████  █     █ ███████ █       ███████ ██████  █     █    █    ███████  █     █ ██████  ███████
+# █     █ █     █ █     █ █       █       █     █ █     █   █ █      █     █     █ █     █ █
+# █       █     █ █     █ █       █       █     █ █     █  █   █     █     █     █ █     █ █
+# █       ███████ █     █ █       █████   ██████  ███████ █     █    █     █     █ ██████  █████
+# █       █     █ █     █ █       █       █     █ █     █ ███████    █     █     █ █   █   █
+# █     █ █     █ █     █ █       █       █     █ █     █ █     █    █     █     █ █    █  █
+#  █████  █     █ ███████ ███████ ███████ ██████  █     █ █     █    █      █████  █     █ ███████
+#
+#
+#                                                                                     BY:SHAWSURAJ
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~''')
+
 def endMessage() :
-    mainMenu()
+    header()
     print('''~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 -CHOLEBHATURE-CHOLEBHATURE-CHOLEBHATURE--CHOLEBHATURE-CHOLEBHATURE-CHOLEBHATURE-''')
 
+def startScan() :
+    for i in range(n) :
+        bScan(ip[i])
 
-def bScan(ip):
-    exec(firefox(ip))
-    exec(nmap_scan(ip))
-    exec(dirb_scan(ip))
-    exec(wp_scan(ip))
+def bScan(ip) :
+    # exec(firefox(ip))
+    execXterm(nmapScan(ip))
+    execXterm(dirbScan(ip))
+    execXterm(wpScan(ip))
+    execXterm(wget(ip))
+
+
+def startAttack() :
+    for i in range(n) :
+        bAttack(ip[i])
+
+def bAttack(ip) :
+    execGnome_terminal(sshAttack(ip))
