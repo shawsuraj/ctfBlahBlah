@@ -1,7 +1,12 @@
 import os
+import sys
 
-# DEBUG: Find a way to make the verbose option work other than passing it in every function.
-verbose = True
+#Vebose
+for arg in sys.argv :
+    if arg == "-v" : #If true - show verbose
+        verbose = True
+    elif not arg == "-v" :
+        verbose = False
 
 #FIREFOX
 def firefox(ip) :
@@ -12,7 +17,7 @@ def firefox(ip) :
     return firefox_cmnd
 
 #NMAP
-def nmap_scan(ip) :
+def nmapScan(ip) :
     nmap_cmnd = 'nmap -v -A {0} -oN Output/{0}/nmap.txt'.format(ip)
     # Verbose
     if verbose :
@@ -20,7 +25,7 @@ def nmap_scan(ip) :
     return nmap_cmnd
 
 #DIRB
-def dirb_scan(ip) :
+def dirbScan(ip) :
     dirb_cmnd = 'dirb http://{0} -o Output/{0}/dirb.txt'.format(ip)
     # Verbose
     if verbose :
@@ -28,7 +33,7 @@ def dirb_scan(ip) :
     return dirb_cmnd
 
 #WPSCAN
-def wp_scan(ip) :
+def wpScan(ip) :
     if not os.system('curl -s --head http://{}/wp-login | head -n 1 | grep "HTTP/1.[01] [23].." > /dev/null '.format(ip)) :
     # if not os.system('curl --output /dev/null --silent --head --fail "http://{}/wp-login" '.format(ip[i])) :   #Better way
         wp_cmnd =  'wpscan -v --url {0} -e u -o Output/{0}/wpscan.txt'.format(ip)
@@ -38,7 +43,13 @@ def wp_scan(ip) :
     else :
         return
 
-    exec(wp_cmnd)
+    return wp_cmnd
+
+#Get Files
+def wget(ip) :
+    wget_cmnd = 'wget http://{0}/robots.txt -O Output/{0}/robots.txt'.format(ip)
+
+    return wget_cmnd
 
 #SQLI
 def sql_scan():
