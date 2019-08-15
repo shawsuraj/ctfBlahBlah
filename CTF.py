@@ -7,7 +7,7 @@
 from os import system
 import sys
 import multiprocessing
-from Defs.actions import *
+from core.main import *
 
 
 if __name__ == "__main__" :

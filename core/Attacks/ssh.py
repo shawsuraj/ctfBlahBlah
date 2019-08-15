@@ -1,17 +1,9 @@
 import sys
 from os import system
+from time import sleep
 import socket
 
 #Take input of wordlist and also set a default wotdlist.
-
-def checkSSH(ip) :
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    res = sock.connect_ex((ip,22))
-    sock.close()
-    if res == 0:
-       return True
-    else :
-       return False
 
 def ssh_version(ip) :
     f = open("Data/{}/ssh_version.rc".format(ip), "w+")
@@ -50,50 +42,56 @@ def ssh_login(ip) :
 
 def sshMenu(ip) :
 
-    print('''SSH servie is running on {0}
+    print('''SSH servie is running on {0}.......
 
-    1) SSH Version Check (METASPLOIT)
-    2) SSH User Enumeration (METASPLOIT)
-    3) SSH Login Brute-force (METASPLOIT)
-    4) SSH Login Brute_force (HYDRA)
+    [1] SSH login
+    [2] SSH Version Check (METASPLOIT)
+    [3] SSH User Enumeration (METASPLOIT)
+    [4] SSH Login Brute-force (METASPLOIT)
+    [5] SSH Login Brute_force (HYDRA)
     '''.format(ip))
 
     option = int(input("Choose an option/options or enter 0 to exit : "))
 
     nOptions = [int(n) for n in str(option)]
 
-    sshMain(ip)
+    sshMain(ip, nOptions)
 
 
-def sshMain(ip) :
+def sshMain(ip, nOptions) :
     # try :
     while True :
         for option in nOptions :
             if option == 1 :
-                print("Scanning the version of SSH.")
-                ssh_version(ip)
+                system("ssh {}".format(ip))
 
-            elif option == 2 :
+            if option == 2 :
+                print("[~] Scanning the version of SSH. Please Wait..")
+                ssh_version(ip)
+                print("[*] Done")
+
+            elif option == 3 :
                 print("Enumeratig")
                 ssh_userEnum(ip)
 
-            elif option == 3 :
+            elif option == 4 :
                 ssh_login(ip)
 
-            elif option == 4 :
+            elif option == 5 :
                 system("hydra -L logins.txt -P pws.txt -M {} ssh".format(ip))
 
             elif option == 0 or option == '0' :
-                return
-
-            sshMenu()
+                print("Exiting...")
+                sleep(2)
+                sys.exit()
+        print("\n")
+        sshMenu(ip)
 
     # except :
     #     sshMenu(ip)
 try :
     ip = sys.argv[1]
-    if checkSSH(ip) :
-        sshMenu(ip)
+    sshMenu(ip)
 
 except KeyboardInterrupt :
     print("Eat sleep rave repeat.")

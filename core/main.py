@@ -3,8 +3,9 @@ import os
 import sys
 from time import sleep
 import shutil
-from Defs.scans import *
-from Def.attack import *
+import socket
+from core.scans import *
+from core.attack import *
 
 #Base Setup
 def baseSetup() :
@@ -86,7 +87,8 @@ def header():
 def endMessage() :
     header()
     print('''~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
--CHOLEBHATURE-CHOLEBHATURE-CHOLEBHATURE--CHOLEBHATURE-CHOLEBHATURE-CHOLEBHATURE-''')
+" Finishing up...\n"''')
+    sleep(1.25)
 
 def startScan() :
     for i in range(n) :
@@ -98,6 +100,24 @@ def bScan(ip) :
     execXterm(dirbScan(ip))
     execXterm(wpScan(ip))
     execXterm(wget(ip))
+    execXterm(checkSqli(ip))
+
+class svc:
+        def __init__(self, port, open = False):
+                self.port = port
+                self.open = status
+
+
+def portScanner(ip, port) :
+    print ("[~] Scanning port {0} of {1}".format(port, ip))
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    res = sock.connect_ex((ip,port))
+    sock.close()
+    if res == 0:
+        print("[*] Port {0} in open on {1}".format(port, ip))
+        return True
+    else :
+        return False
 
 
 def startAttack() :
@@ -105,4 +125,15 @@ def startAttack() :
         bAttack(ip[i])
 
 def bAttack(ip) :
-    execGnome_terminal(sshAttack(ip))
+    ssh = svc(22,portScanner(ip,22))
+    ftp = svc(21,portScanner(ip,21))
+
+    if shh.open :
+        execGnome_terminal(sshAttack(ip))
+
+    if ftp.open :
+        execGnome_terminal(___)
+
+    # for port in ssh.values() :
+    #     if portScanner(ip, port) :
+    #         execGnome_terminal(sshAttack(ip))
