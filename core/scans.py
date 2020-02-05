@@ -20,7 +20,7 @@ def firefox(site) :
 
 #NMAP
 def nmapScan(site) :
-    nmap_cmnd = 'nmap -v -p 0-65535 -sSVC {0} -oN Output/{0}/nmap.txt'.format(site)
+    nmap_cmnd = 'nmap -v -p 0-65535 -sSVC {0} --script vuln -oN Output/{0}/nmap.txt'.format(site)
     # Verbose
     if verbose :
         print("[*] Starting nmap scan on {0}".format(site))

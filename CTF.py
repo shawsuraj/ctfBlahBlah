@@ -17,7 +17,8 @@ if __name__ == "__main__" :
         baseSetup()
 
         startScan()
-        startAttack()
+        #startAttack()
+
     except KeyboardInterrupt:
         endMessage()
         exit(0)

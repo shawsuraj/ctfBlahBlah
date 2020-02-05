@@ -15,10 +15,10 @@ def baseSetup() :
     ip = setIP()
     if os.path.isdir('Output') :
         shutil.rmtree("Output")
-    if os.path.isdir('Data') :
-        shutil.rmtree("Data")
+    # if os.path.isdir('Data') :
+    #     shutil.rmtree("Data")
     os.makedirs("Output")
-    os.makedirs("Data")
+    # os.makedirs("Data")
 
     dir(*ip)
     sleep(2) #Just to wait
@@ -43,7 +43,7 @@ def setIP() :
 def dir(*ip) :
     for i in range(n) :
         os.system('mkdir Output/{}'.format(ip[i]))
-        os.system('mkdir Data/{}'.format(ip[i]))
+        # os.system('mkdir Data/{}'.format(ip[i]))
 
 def execXterm(cmnd) :
     os.system('xterm -e bash -c "{}" &'.format(cmnd))
@@ -100,39 +100,24 @@ def bScan(ip) :
     execXterm(dirbScan(ip))
     execXterm(wpScan(ip))
     execXterm(wget(ip))
-    execXterm(checkSqli(ip))
-
-class svc:
-        def __init__(self, port, open = False):
-                self.port = port
-                self.open = status
+    #execXterm(checkSqli(ip))
 
 
-def portScanner(ip, port) :
-    print ("[~] Scanning port {0} of {1}".format(port, ip))
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    res = sock.connect_ex((ip,port))
-    sock.close()
-    if res == 0:
-        print("[*] Port {0} in open on {1}".format(port, ip))
-        return True
-    else :
-        return False
-
-
-def startAttack() :
-    for i in range(n) :
-        bAttack(ip[i])
-
-def bAttack(ip) :
-    ssh = svc(22,portScanner(ip,22))
-    ftp = svc(21,portScanner(ip,21))
-
-    if shh.open :
-        execGnome_terminal(sshAttack(ip))
-
-    if ftp.open :
-        execGnome_terminal(___)
+# def startAttack() :
+#     for i in range(n) :
+#         bAttack(ip[i])
+#
+# def bAttack(ip) :
+#
+#     services = list()
+#     # services.append("ftp")
+#     services.append("ssh")
+#
+#     for service in services :
+#         try :
+#             execGnome_terminal(service())
+#         except Exception :
+#             pass
 
     # for port in ssh.values() :
     #     if portScanner(ip, port) :
